@@ -54,20 +54,20 @@ class DetailMovieActivity : AppCompatActivity(), View.OnClickListener {
 
         mMovie = intent.getParcelableExtra(EXTRA_MOVIE)
 
-        tvName.text = mMovie.getmName()
-        tvRelease.text = mMovie.getmRelease()
-        tvDesc.text = mMovie.getmDesc()
-        tvPopularity.text = mMovie.getmPopularity()
-        tvVoteAverage.text = mMovie.getmVote()
+        tvName.text = mMovie?.getmName()
+        tvRelease.text = mMovie?.getmRelease()
+        tvDesc.text = mMovie?.getmDesc()
+        tvPopularity.text = mMovie?.getmPopularity()
+        tvVoteAverage.text = mMovie?.getmVote()
 
         Glide.with(this)
-            .load("https://image.tmdb.org/t/p/w780/" + mMovie.getmPhoto())
+            .load("https://image.tmdb.org/t/p/w780/" + mMovie?.getmPhoto())
             .placeholder(R.drawable.ic_image_black_24dp)
             .transform(FitCenter())
             .into(imgPhoto)
 
         mMovieHelper = MovieHelper.getInstance(applicationContext)
-        if (mMovieHelper?.CheckMovie(String.valueOf(mMovie.getmId()))!!) {
+        if (mMovieHelper?.CheckMovie(String.valueOf(mMovie?.getmId()))!!) {
             button_favorite.background = resources.getDrawable(R.drawable.ic_favorite_24dp)
             isFavorite = true
         }
@@ -83,42 +83,42 @@ class DetailMovieActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         if (v.id == R.id.button_favorite) if (!isFavorite) {
-            mMovie.setmType("movie")
+            mMovie?.setmType("movie")
             mMovieHelper?.open()
-            val result: Long = (mMovieHelper?.insertMovie(mMovie) ?: mMovieHelper?.close()) as Long
+            val result: Long = (mMovie?.let { mMovieHelper?.insertMovie(it) } ?: mMovieHelper?.close()) as Long
             if (result > 0) {
                 button_favorite!!.background = resources.getDrawable(R.drawable.ic_favorite_24dp)
                 Toast.makeText(
                     applicationContext,
-                    "Success " + mMovie.getmName().toString() + " Added to Favorite",
+                    "Success " + mMovie?.getmName().toString() + " Added to Favorite",
                     Toast.LENGTH_SHORT
                 ).show()
                 updateWidget()
             } else {
                 Toast.makeText(
                     applicationContext,
-                    "Failed " + mMovie.getmName().toString() + " Added to Favorite",
+                    "Failed " + mMovie?.getmName().toString() + " Added to Favorite",
                     Toast.LENGTH_SHORT
                 ).show()
             }
         } else {
-            mMovie.setmType("movie")
+            mMovie?.setmType("movie")
             mMovieHelper?.open()
             val result: Int =
-                (mMovieHelper?.deleteMovie(mMovie.getmId()) ?: mMovieHelper?.close()) as Int
+                (mMovie?.getmId()?.let { mMovieHelper?.deleteMovie(it) } ?: mMovieHelper?.close()) as Int
             if (result > 0) {
                 button_favorite!!.background =
                     resources.getDrawable(R.drawable.ic_favorite_border_24dp)
                 Toast.makeText(
                     applicationContext,
-                    "Success " + mMovie.getmName().toString() + " Delete from Favorite",
+                    "Success " + mMovie?.getmName().toString() + " Delete from Favorite",
                     Toast.LENGTH_SHORT
                 ).show()
                 updateWidget()
             } else {
                 Toast.makeText(
                     applicationContext,
-                    "Failed " + mMovie.getmName().toString() + " Delete Favorite",
+                    "Failed " + mMovie?.getmName().toString() + " Delete Favorite",
                     Toast.LENGTH_SHORT
                 ).show()
             }

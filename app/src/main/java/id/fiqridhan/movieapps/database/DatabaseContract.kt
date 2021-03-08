@@ -6,7 +6,7 @@ import android.provider.BaseColumns
 
 object DatabaseContract {
     const val TABLE_MOVIE = "movie"
-    const val AUTHORITY = "com.smk.informatics"
+    const val AUTHORITY = "id.fiqridhan.movieapps"
     private const val SCHEME = "content"
     fun getColumnString(
         cursor: Cursor,
